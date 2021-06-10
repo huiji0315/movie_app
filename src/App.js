@@ -1,73 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const foodILike = [
-  {
-    id:1,
-    name: "Kimchi",
-    image:
-      "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg",
-    rating: 5
-  },
-  {
-    id:2,
-    name: "Samgyeopsal",
-    image:
-      "https://3.bp.blogspot.com/-hKwIBxIVcQw/WfsewX3fhJI/AAAAAAAAALk/yHxnxFXcfx4ZKSfHS_RQNKjw3bAC03AnACLcBGAs/s400/DSC07624.jpg",
-    rating: 4.9
-  },
-  {
-    id:3,
-    name: "Bibimbap",
-    image:
-      "http://cdn-image.myrecipes.com/sites/default/files/styles/4_3_horizontal_-_1200x900/public/image/recipes/ck/12/03/bibimbop-ck-x.jpg?itok=RoXlp6Xb",
-    rating: 4.8
-  },
-  {
-    id:4,
-    name: "Doncasu",
-    image:
-      "https://s3-media3.fl.yelpcdn.com/bphoto/7F9eTTQ_yxaWIRytAu5feA/ls.jpg",
-    rating: 5.5
-  },
-  {
-    id:5,
-    name: "Kimbap",
-    image:
-      "http://cdn2.koreanbapsang.com/wp-content/uploads/2012/05/DSC_1238r-e1454170512295.jpg",
-    rating: 4.7
-  }
-];
-// react의 모든 element들은 다르게 보일 필요가 있다.
+class App extends React.Component{
+  state = {
+    count: 0
+  };
 
-function Food({ name, picture, rating }) {
-  return <div>
-    <h2>I like {name}</h2>
-    <h4>{rating}/5.0</h4>
-    <img src={picture} alt={name}/>
-  </div>
-} // 동적 데이터가 있는 component
+  add = () => {
+    // this.setState({ count: this.state.count + 1 });
+    // react에서 state를 set할 때, react에서 외부의 상태(state)에 의존하지 않는 것이 가장 좋다.
+    this.setState(current => ({ count: current.count + 1 }));
+  };
+  minus = () => {
+    // this.setState({ count: this.state.count - 1 });
+    this.setState(current => ({ count: current.count - 1 }));
+  };
+  // javascript 함수 작성
+  // react는 render function을 refresh하지 않는다.
+  // == 매번 state의 상태를 변경할 때, react가 render function을 호출해서 바꿔주길 원한다.
+  // -> setState function을 호출하면 react는 state를 refresh하고, render function을 새로운 state와 함께 다시 호출한다.
+  // react는 virtualDOM을 갖고 있기 때문에 변경되는 부분만 빠르게 변경할 수 있고, 깜빡거리지도 않는다.
+  // react component에서 사용하는 유일한 function은 render function이다.
 
-Food.propTypes = {
-  name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  rating: PropTypes.number // isRequired가 없으면 type만 체크
+  render() {
+    return <div>
+      <h1>The number is: {this.state.count}</h1>
+      <button onClick={this.add}>Add</button>
+      <button onClick={this.minus}>Minus</button>
+    </div>
+  } // onClick은 react magic
 }
-// propTypes로 반드시 작성해야 인식함
-// 이밖에도 많은 것을 확인할 수 있음
-
-function App() {
-  return <div>
-    {foodILike.map(dish => (
-      <Food key={dish.id} name={dish.name} picture={dish.image} rating={dish.rating}/>
-    ))}
-  </div>
-}
-// Parent component로부터 전달받은 props가 우리가 예상한 props인지를 체크할 필요가 있다.
-// -> npm i prop-types 설치
-// -> npm i로 다시 update 후 npm start 해주기
-// -> Food.propTypes에 체크할 propTypes 작성
+// React.Component에서 class component 생성(state를 갖고 있음)
+// -> class는 return이 없고 render method를 갖고 있다.
+// * react는 자동적으로 모든 class component의 render method를 실행한다.
+// state는 보통 동적데이터와 함께 작업할 때 만들어진다.
+// -> 변하는 데이터(생겨났다가 사라졌다가)
+// state = object 
+// : component의 data를 넣을 공간이 있고, 이 data는 변한다.
 
 export default App;
-// component는 HTML을 반환하는 함수다.
-// JSX란 Javascript 안의 HTML -> Component를 만들고 어떻게 사용하는지에 대한 것
