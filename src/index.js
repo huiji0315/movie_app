@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,8 +8,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+// <App />이 component의 형태다.
+// react는 component를 사용해서 HTML처럼 작성하려는 경우에 필요하다.
+// javascript와 HTML 사이의 이런 조합을 jsx라고 부른다.
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// react application은 하나의 component만(App)을 rendering 해야한다.
