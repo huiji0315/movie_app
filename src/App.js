@@ -36,11 +36,13 @@ const foodILike = [
   }
 ];
 
+function renderFood(dish) {
+  return <Food name={dish.name} picture={dish.image} />;
+}
+
 function App() {
   return <div>
-    {foodILike.map(dish => (
-      <Food name={dish.name} picture={dish.image}/>
-    ))}
+    {foodILike.map(renderFood)}
   </div>
 }
 // {}로 표현하면 javascript로 인식한다. {} 없으면 그냥 text로 인식한다.
