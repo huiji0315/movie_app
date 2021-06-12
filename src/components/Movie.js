@@ -3,18 +3,21 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Movie.css';
 
-function Movie({ year, title, summary, poster, genres }) {
+function Movie({ id, year, title, summary, poster, genres }) {
   return (
-    <Link to={{
-      pathname: "/movie-detail",
-      state: {
-        year,
-        title,
-        summary,
-        poster,
-        genres
-      }
-    }}> {/* 모든 props를 movie-detail 페이지에 전달 */}
+    <div className="movie">
+      <Link
+        to={{
+          pathname: `/movie/${id}`,
+          state: {
+            year,
+            title,
+            summary,
+            poster,
+            genres
+          }
+        }}
+      > {/* 모든 props를 movie-detail 페이지에 전달 */}
     <div className="movie">
         <img src={poster} alt={title} title={title} />
         <div className="movie__data">
@@ -27,7 +30,8 @@ function Movie({ year, title, summary, poster, genres }) {
             <p className="movie__summary">{summary.slice(0, 180)}...</p>
         </div>
       </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 // component가 state가 필요없을 경우에는 이게 class component가 될 필요는 없다.

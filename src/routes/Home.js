@@ -17,7 +17,8 @@ class Home extends React.Component{
     this.setState({ movies, isLoading: false }); // movies(state): movies(axios).data.data.movies -> es6 문법
   } // YTS API
   componentDidMount() {
-    this.getMovies();
+      this.getMovies();
+      console.log(this.props);
   } // render 함수 호출 후 componentDidMount 함수 호출(Component Life Cycle)
   // axios는 마치 fetch 위에 있는 작은 layer
   // javascript에게 getMovie function에 시간이 조금 필요하다고 알려주어야 한다.
