@@ -2,13 +2,25 @@ import React from 'react';
 import { HashRouter, Route } from 'react-router-dom'
 import About from './routes/About';
 import Home from './routes/Home';
+import Detail from './routes/Detail';
+import Navigation from './components/Navigation';
+import './App.css';
 
-function App() {
+function App(props) {
+  console.log(props);
   return <HashRouter>
+    <Navigation />
     <Route path="/" exact={true} component={Home} />
     <Route path="/about" component={About} />
+    <Route path="/movie-detail" component={Detail} />
   </HashRouter>
 }// path로 가서 About 컴포넌트를 보여달라.
+// Navigation component에서 Link를 사용하고 있을 경우, router 안에 넣어야 한다.
+
+// 모든 컴포넌트에는 props가 있다.
+// 라우터에 있는 모든 라우트들은 기본값으로 props를 갖는다. 이 props를 사용할 수 있다.
+// 클릭 한 번으로 해당 페이지에 정보(props)를 보낼 수 있다.
+// -> react-router에 의해 넣어진 것들. 아직 about에 전송되지 않음.
 
 export default App;
 // router = simple react component
