@@ -1,41 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import axios from 'axios';
+import Movie from './Movie';
 
 class App extends React.Component{
   state = {
-    count: 0
+    isLoading: true,
+    movies: []
   };
-
-  add = () => {
-    // this.setState({ count: this.state.count + 1 });
-    // react에서 state를 set할 때, react에서 외부의 상태(state)에 의존하지 않는 것이 가장 좋다.
-    this.setState(current => ({ count: current.count + 1 }));
-  };
-  minus = () => {
-    // this.setState({ count: this.state.count - 1 });
-    this.setState(current => ({ count: current.count - 1 }));
-  };
-  // javascript 함수 작성
-  // react는 render function을 refresh하지 않는다.
-  // == 매번 state의 상태를 변경할 때, react가 render function을 호출해서 바꿔주길 원한다.
-  // -> setState function을 호출하면 react는 state를 refresh하고, render function을 새로운 state와 함께 다시 호출한다.
-  // react는 virtualDOM을 갖고 있기 때문에 변경되는 부분만 빠르게 변경할 수 있고, 깜빡거리지도 않는다.
-  // react component에서 사용하는 유일한 function은 render function이다.
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies }
+      }
+    } = await axios.get("https://yts-proxy.now.sh/list_movies.json?sort_by=rating");
+    this.setState({ movies, isLoading: false }); // movies(state): movies(axios).data.data.movies -> es6 문법
+  } // YTS API
+  componentDidMount() {
+    this.getMovies();
+  } // render 함수 호출 후 componentDidMount 함수 호출(Component Life Cycle)
+  // axios는 마치 fetch 위에 있는 작은 layer
+  // javascript에게 getMovie function에 시간이 조금 필요하다고 알려주어야 한다.
+  // -> async와 await을 이용해서 느린 axios를 기다리도록 한다.
 
   render() {
-    return <div>
-      <h1>The number is: {this.state.count}</h1>
-      <button onClick={this.add}>Add</button>
-      <button onClick={this.minus}>Minus</button>
-    </div>
-  } // onClick은 react magic
+    const { isLoading, movies } = this.state;
+    return (
+      <div>{isLoading ? "Loading..." : movies.map(movie => (
+        <Movie
+          key={movie.id}
+          id={movie.id}
+          year={movie.year}
+          title={movie.title}
+          summary={movie.summary}
+          poster={movie.medium_cover_image}
+        />
+      ))}
+      </div>
+    );
+  }
 }
-// React.Component에서 class component 생성(state를 갖고 있음)
-// -> class는 return이 없고 render method를 갖고 있다.
-// * react는 자동적으로 모든 class component의 render method를 실행한다.
-// state는 보통 동적데이터와 함께 작업할 때 만들어진다.
-// -> 변하는 데이터(생겨났다가 사라졌다가)
-// state = object 
-// : component의 data를 넣을 공간이 있고, 이 data는 변한다.
+// object을 풀어줄 때 map 함수를 사용하고, jsx에서는 props를 통해 값을 전달한다.
+// key props는 표현되지는 않지만 필수 props이다.
+// npm i axios
 
 export default App;
