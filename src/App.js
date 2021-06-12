@@ -22,17 +22,18 @@ class App extends React.Component{
   // axios는 마치 fetch 위에 있는 작은 layer
   // javascript에게 getMovie function에 시간이 조금 필요하다고 알려주어야 한다.
   // -> async와 await을 이용해서 느린 axios를 기다리도록 한다.
+  // npm i axios -> axios 사용을 위해 설치
 
   render() {
     const { isLoading, movies } = this.state;
     return (
-      <section class="container">
+      <section className="container">
         {isLoading ? (
-          <div class="loader">
-            <span class="loader__text">Loading...</span>
+          <div className="loader">
+            <span className="loader__text">Loading...</span>
           </div>
         ) : (
-          <div class="movies">
+          <div className="movies">
             {movies.map(movie => (
               <Movie
                 key={movie.id}
@@ -41,16 +42,19 @@ class App extends React.Component{
                 title={movie.title}
                 summary={movie.summary}
                 poster={movie.medium_cover_image}
+                genres={movie.genres}
               />
             ))}
           </div>
         )}
       </section>
     );
-  }
+  } // javascript class 안에 있으면 component class에 의해 react가 혼란스러워하기 때문에 class가 아닌 className으로 기술해주어야 한다.
 }
 // object을 풀어줄 때 map 함수를 사용하고, jsx에서는 props를 통해 값을 전달한다.
 // key props는 표현되지는 않지만 필수 props이다.
-// npm i axios
 
 export default App;
+// npm i gh-pages : github의 github page 도메인에 웹사이트를 나타내주도록 함
+// -> "https://huiji0315.github.io/movie_app/" : homepage를 package.jso에 추가해주기
+// -> npm run deploy 실행하면 predeploy가 먼저 실행되어 build 폴더 만들어지고 github page가 deploy까지 완료된다.
