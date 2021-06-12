@@ -1,60 +1,19 @@
 import React from 'react';
-import axios from 'axios';
-import Movie from './Movie';
-import './App.css';
+import { HashRouter, Route } from 'react-router-dom'
+import About from './routes/About';
+import Home from './routes/Home';
 
-class App extends React.Component{
-  state = {
-    isLoading: true,
-    movies: []
-  };
-  getMovies = async () => {
-    const {
-      data: {
-        data: { movies }
-      }
-    } = await axios.get("https://yts-proxy.now.sh/list_movies.json?sort_by=rating");
-    this.setState({ movies, isLoading: false }); // movies(state): movies(axios).data.data.movies -> es6 문법
-  } // YTS API
-  componentDidMount() {
-    this.getMovies();
-  } // render 함수 호출 후 componentDidMount 함수 호출(Component Life Cycle)
-  // axios는 마치 fetch 위에 있는 작은 layer
-  // javascript에게 getMovie function에 시간이 조금 필요하다고 알려주어야 한다.
-  // -> async와 await을 이용해서 느린 axios를 기다리도록 한다.
-  // npm i axios -> axios 사용을 위해 설치
-
-  render() {
-    const { isLoading, movies } = this.state;
-    return (
-      <section className="container">
-        {isLoading ? (
-          <div className="loader">
-            <span className="loader__text">Loading...</span>
-          </div>
-        ) : (
-          <div className="movies">
-            {movies.map(movie => (
-              <Movie
-                key={movie.id}
-                id={movie.id}
-                year={movie.year}
-                title={movie.title}
-                summary={movie.summary}
-                poster={movie.medium_cover_image}
-                genres={movie.genres}
-              />
-            ))}
-          </div>
-        )}
-      </section>
-    );
-  } // javascript class 안에 있으면 component class에 의해 react가 혼란스러워하기 때문에 class가 아닌 className으로 기술해주어야 한다.
-}
-// object을 풀어줄 때 map 함수를 사용하고, jsx에서는 props를 통해 값을 전달한다.
-// key props는 표현되지는 않지만 필수 props이다.
+function App() {
+  return <HashRouter>
+    <Route path="/" exact={true} component={Home} />
+    <Route path="/about" component={About} />
+  </HashRouter>
+}// path로 가서 About 컴포넌트를 보여달라.
 
 export default App;
-// npm i gh-pages : github의 github page 도메인에 웹사이트를 나타내주도록 함
-// -> "https://huiji0315.github.io/movie_app/" : homepage를 package.jso에 추가해주기
-// -> npm run deploy 실행하면 predeploy가 먼저 실행되어 build 폴더 만들어지고 github page가 deploy까지 완료된다.
+// router = simple react component
+// 라우터는 url을 가져다가 확인하고, 우리가 라우터에게 무엇을 명령했느냐에 따라 해당 컴포넌트로 이동한다.
+// http://localhost:3000/movie_app#/about -> url을 이용해서 path를 지정할 수 있다.
+// 라우터가 동작하는 방식(url 앞부분만 맞아도 rendering함)에 의해서 2개 이상의 컴포넌트가 한 화면에 동시에 렌더링 될 수 있다는 문제가 있다.
+// ex) / 와 /about 에서 /에서는 Home을 /about에서는 Home과 About 모두를 렌더링한다.
+// -> exact={true}를 추가하여 정확히 이거아니면 렌더링 하지 않도록 한다.
